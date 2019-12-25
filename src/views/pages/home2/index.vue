@@ -5,7 +5,6 @@
       :tableData="tableData"
       :name="tableName"
       >
-
       </jTable>
     </div>
 </template>

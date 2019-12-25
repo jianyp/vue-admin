@@ -4,6 +4,7 @@ Vue.use(Vuex)
 
 const state={
   headTag:[],
+  // 菜单
   menuList:[
       {menuName:"导航一",url:"/1",icon:"",child:[
           {menuName:"菜单一",url:"/1-1",icon:""},
@@ -17,12 +18,17 @@ const state={
       {menuName:"导航二",url:"/2",icon:""},
       {menuName:"导航三",url:"/3",icon:""},
       {menuName:"导航四",url:"/4",icon:""}
-    ]
+    ],
+  // 表格当前页
+  currentPage:1
 }
 const mutations= {
-  addTag (headTag,val) {
-  headTag.push(val);
-}
+  addTag (state,val) {
+    state.headTag.push(val);
+  },
+  changecurrentPage(state,val){
+    state.currentPage = val;
+  }
 }
 export default new Vuex.Store({
   state,
