@@ -19,16 +19,16 @@ const state={
       {menuName:"导航三",url:"/3",icon:""},
       {menuName:"导航四",url:"/4",icon:""}
     ],
-  // 表格当前页
-  currentPage:1
+    // 头部快捷导航
+    editableTabsValue:"1",
+    editableTabs: [],
+    tabIndex: 1
 }
+
 const mutations= {
-  addTag (state,val) {
-    state.headTag.push(val);
+  addTag(state,obj) {
+    state.editableTabs.push(obj);
   },
-  changecurrentPage(state,val){
-    state.currentPage = val;
-  }
 }
 export default new Vuex.Store({
   state,

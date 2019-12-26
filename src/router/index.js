@@ -17,8 +17,32 @@ export default new Router({
           component:page
         },
         {
+          path:'/2',
+          component:()=> import('@/views/pages/home/index')
+        },
+        {
           path:'/1-2',
-          component:()=> import('@/views/pages/home2/index')
+          component:()=> import('@/views/pages/home/index')
+        },
+        {
+          path:'/1-3',
+          component:()=> import('@/views/pages/home/index')
+        },
+        {
+          path:'/3',
+          component:()=> import('@/views/pages/home/index')
+        },
+        {
+          path:'/4',
+          component:()=> import('@/views/pages/home/index')
+        },
+        {
+          path:'/1-4-1',
+          component:()=> import('@/views/pages/home/index')
+        },
+        {
+          path:'/1-4-2',
+          component:()=> import('@/views/pages/home/index')
         }
       ]
     }

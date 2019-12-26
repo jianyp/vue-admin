@@ -4,6 +4,8 @@
       <jTable
       :tableData="tableData"
       :name="tableName"
+      :pageSize="10"
+      dataurl="api/table"
       >
       </jTable>
     </div>

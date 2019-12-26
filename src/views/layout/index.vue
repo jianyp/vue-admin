@@ -19,9 +19,9 @@
       </div>
       <div class="main" :class="isCollapse?'close':''">
         <div class="head-tags">
-          <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab"  @tab-click="toComponent">
+          <el-tabs v-model="$store.state.editableTabsValue" type="card" closable @tab-remove="removeTab" @tab-click="select">
             <el-tab-pane
-              v-for="(item, index) in editableTabs"
+              v-for="item in $store.state.editableTabs"
               :key="item.name"
               :label="item.title"
               :name="item.name"
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import navMenu from "@/components/mainnav/mainnav";
+  import navMenu from "@/components/navMenu/navMenu";
   import screenfull from 'screenfull'
   import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
     export default {
@@ -43,9 +43,7 @@
         data(){
           return{
               isCollapse:false,
-              editableTabsValue:"2",
-              editableTabs: [],
-              tabIndex: 2
+             
           }
         },
         computed:{
@@ -54,21 +52,24 @@
             })
         },
         methods:{
+          // 导航展开收齐
             menuHander(){
                 this.isCollapse = !this.isCollapse;
             },
+            // 全屏按钮功能
             screenFull(){
                 if (screenfull.isEnabled) {
                     screenfull.toggle();
                 }
             },
+            // 导航选中方法
             handleSelect(key, keyPath){
                 console.log(key, keyPath);
-                this.addTab(key);
             },
+            // 快捷导航移除方法
             removeTab(targetName) {
-                let tabs = this.editableTabs;
-                let activeName = this.editableTabsValue;
+                let tabs = this.$store.state.editableTabs;
+                let activeName = this.$store.state.editableTabsValue;
                 if (activeName === targetName) {
                     tabs.forEach((tab, index) => {
                         if (tab.name === targetName) {
@@ -79,22 +80,14 @@
                         }
                     });
                 }
-                this.editableTabsValue = activeName;
-                this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+                this.$store.state.editableTabsValue = activeName;
+                this.$store.state.editableTabs = tabs.filter(tab => tab.name !== targetName);
             },
-            addTab(targetName) {
-                let newTabName = ++this.tabIndex + '';
-                this.editableTabs.push({
-                    title: targetName,
-                    name: newTabName,
-                    url:targetName
-                });
-                this.editableTabsValue = newTabName;
-            },
-            toComponent(targetName){
-              console.log(targetName)
-                this.$router.push({path:targetName.label})
+            select(tag){
+              console.log(tag);
+              this.$router.push({path:tag.name})
             }
+           
         },
         components:{
             navMenu
@@ -107,9 +100,13 @@
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 240px;
     height: 100%;
+       overflow-y: auto;
   }
   .el-menu--collapse{
     height: 100%;
+  }
+  .el-menu>div{
+ 
   }
   html,body,#app,.layout,.layout .main{
     height: 100%;
@@ -123,6 +120,7 @@
     top: 0;
     left: 0;
     right: 0;
+    z-index: 99;
   }
   .layout .aside{
     position: absolute;
@@ -163,12 +161,13 @@
     padding-top: 60px;
     padding-left: 250px;
     transition: .4s;
+    overflow-y: auto;
   }
   .close{
     padding-left: 70px !important;
   }
   .rotate{
-    transform: rotate(180deg);
+    transform: rotateY(180deg);
   }
   .fullscreen{
     transform: rotate(45deg);

@@ -38,7 +38,7 @@
         <navMenu  :menuList="item.child"></navMenu>
       </el-submenu>
 
-      <el-menu-item  v-for="(item,index) in menuList" :key="item.url" v-if="item.child==undefined"  :index="item.url">
+      <el-menu-item  v-for="(item,index) in menuList" :key="item.url" v-if="item.child==undefined"  :index="item.url" @click="addTags(item)">
         <i  class="el-icon-location"></i>
         <span>{{item.menuName}}</span>
       </el-menu-item>
@@ -56,14 +56,35 @@
         },
         data(){
             return{
-
+               
             }
         },
         created(){
           console.log(this.menuList)
         },
         methods:{
-
+          addTags(val){
+            console.log(val)
+            let flag = false;
+            let obj =  {
+                  title: val.menuName,
+                  name: val.url,
+              }
+            if(this.$store.state.editableTabs.length>0){
+              this.$store.state.editableTabs.forEach(item=>{
+                console.log("val"+val.menuName)
+                if(item.name == val.url){
+                  flag = true
+                }
+              })
+            }
+            console.log(flag)
+            if(!flag){
+              this.$store.commit("addTag",obj)
+            }
+            this.$store.state.editableTabsValue = val.url;
+          }
+         
         }
     };
 </script>

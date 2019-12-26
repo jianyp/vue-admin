@@ -2,6 +2,7 @@
   <div class="home">
     <el-table
       :data="tableData"
+      v-loading="loading"
       style="width: 100%"
       border
       :default-sort="{prop: 'date', order: 'descending'}"
@@ -18,15 +19,14 @@
       ></el-table-column>
     </el-table>
     <div class="block">
-      <span class="demonstration">完整功能</span>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="$store.state.currentPage"
+        :current-page="currentPage"
         :page-sizes="[10, 20, 30, 40]"
-        :page-size="100"
+        :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="tableData.length"
       ></el-pagination>
     </div>
   </div>
@@ -39,11 +39,18 @@ export default {
     name: {
       type: String
     },
-    tableData: [Object, Array]
+    tableData: [Object, Array],
+    pageSize: {
+      type: Number
+    },
+    dataurl: {
+      type: String
+    }
   },
   data() {
     return {
-      currentPage:4, 
+      currentPage: 1,
+      loading: true,
       tableColumn: [
         {
           name: "日期",
@@ -72,19 +79,35 @@ export default {
       ]
     };
   },
-  mounted(){
-    console.log(this.$store.state.currentPage)
+  mounted() {
+    console.log(this.dataurl);
+    this.getTabledata();
   },
   methods: {
     formatter(row, column) {
       return row.address;
     },
-     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.$store.commit('changecurrentPage',val);
+      sessionStorage.setItem("currentPage", val);
+    },
+    getTabledata() {
+      this.$axios
+        .get("/user", {
+          params: {
+            ID: 12345
+          }
+        })
+        .then(function(res){
+          console.log(res);
+          res.total
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
   components: {}
