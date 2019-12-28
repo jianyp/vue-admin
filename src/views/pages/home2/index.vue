@@ -13,6 +13,7 @@
 
 <script>
     import jTable from "@/views/pages/table/index";
+    import {getTable} from '@/api/api.js'
     export default {
         props: {
         },
@@ -37,6 +38,12 @@
                   address: '上海市普陀区金沙江路 1516 弄'
               }]
           }
+        },
+        mounted(){
+            getTable({
+                type:0,
+                name:111
+            })
         },
         methods:{
 

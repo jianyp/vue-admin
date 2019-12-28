@@ -1,31 +1,34 @@
 <template>
     <div class="home">
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        border
-        :default-sort = "{prop: 'date', order: 'descending'}"
+      <div>
+        <el-button @click="newtableVisible = true">新增主表</el-button>
+      </div>
+      <jTable
+        :tableData="tableData"
+        :name="tableName"
+        :pageSize="10"
+        dataurl="api/table"
       >
-        <el-table-column
-          prop="date"
-          label="日期"
-          sortable
-          :resizable="false"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          sortable
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="地址"
-          sortable
-          :formatter="formatter">
-        </el-table-column>
-      </el-table>
+      </jTable>
+
+      <el-dialog
+        title="新增主表"
+        :visible.sync="newtableVisible"
+        v-dialogDrag
+        width="30%"
+        center>
+        <div>
+          唯一标识：
+          <el-input v-model="id"></el-input>
+        </div>
+        <div>
+          表名：
+          <el-input v-model="tableName"></el-input>
+        </div>
+
+    <el-button @click="newtableVisible = false">取 消</el-button>
+    <el-button type="primary" @click="newtableVisible = false">确 定</el-button>
+      </el-dialog>
     </div>
 </template>
 
@@ -36,23 +39,10 @@
         },
         data(){
           return{
-              tableData: [{
-                  date: '2016-05-02',
-                  name: '王小虎',
-                  address: '上海市普陀区金沙江路 1518 弄'
-              }, {
-                  date: '2016-05-04',
-                  name: '王小虎',
-                  address: '上海市普陀区金沙江路 1517 弄'
-              }, {
-                  date: '2016-05-01',
-                  name: '王小虎',
-                  address: '上海市普陀区金沙江路 1519 弄'
-              }, {
-                  date: '2016-05-03',
-                  name: '王小虎',
-                  address: '上海市普陀区金沙江路 1516 弄'
-              }]
+              newtableVisible:false,
+              tableData: [],
+              id:"",
+              tableName:""
           }
         },
         methods:{

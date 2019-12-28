@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+
     <el-table
       :data="tableData"
       v-loading="loading"
@@ -49,6 +50,7 @@ export default {
   },
   data() {
     return {
+        show:false,
       currentPage: 1,
       loading: true,
       tableColumn: [
@@ -82,6 +84,9 @@ export default {
   mounted() {
     console.log(this.dataurl);
     this.getTabledata();
+    setTimeout(()=>{
+        this.loading = false
+      },1000)
   },
   methods: {
     formatter(row, column) {

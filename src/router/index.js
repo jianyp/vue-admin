@@ -1,16 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '@/views/layout/index'
+import Layout from '@/views/layout/index'
 import page from '@/views/pages/home/index'
+import Login from '@/views/login/index'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'layoutindex',
-      component: index,
+      path:'/',
+      name: Login,
+      component: Login
+    },
+    {
+      path: '/layoutindex',
+      name: 'Layout',
+      component: Layout,
       children:[
         {
           path:'/1-1',
@@ -18,7 +24,7 @@ export default new Router({
         },
         {
           path:'/2',
-          component:()=> import('@/views/pages/home/index')
+          component:()=> import('@/views/pages/home2/index')
         },
         {
           path:'/1-2',
