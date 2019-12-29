@@ -60,11 +60,10 @@
             }
         },
         created(){
-          console.log(this.menuList)
         },
         methods:{
           addTags(val){
-            console.log(val)
+            // 添加头部快捷导航，判断去重
             let flag = false;
             let obj =  {
                   title: val.menuName,
@@ -83,6 +82,7 @@
               this.$store.commit("addTag",obj)
             }
             this.$store.state.editableTabsValue = val.url;
+            console.log(this.$store.state.editableTabs)
           }
          
         }

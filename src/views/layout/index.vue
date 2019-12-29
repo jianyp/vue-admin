@@ -10,6 +10,7 @@
           <div><span class="el-icon-search"></span></div>
           <div><span class="el-icon-rank fullscreen" @click="screenFull()"></span></div>
           <div><span class="el-icon-message"></span></div>
+          <div><p>{{user}}</p></div>
         </div>
       </div>
       <div class="aside">
@@ -43,13 +44,16 @@
         data(){
           return{
               isCollapse:false,
-             
+             user:"蹇勇朴"
           }
         },
         computed:{
             ...mapState({
                 menuList: state => state.menuList,
             })
+        },
+        created(){
+
         },
         methods:{
           // 导航展开收齐
@@ -82,6 +86,8 @@
                 }
                 this.$store.state.editableTabsValue = activeName;
                 this.$store.state.editableTabs = tabs.filter(tab => tab.name !== targetName);
+                // 跳转到当前激活tabs的对应路由页面
+                this.$router.push({path:this.$store.state.editableTabsValue})
             },
             select(tag){
               console.log(tag);
@@ -114,8 +120,8 @@
   .layout .header{
     padding: 0 20px;
     position: absolute;
-    height: 60px;
-    line-height: 60px ;
+    height: 50px;
+    line-height: 50px ;
     background: rgb(24,144,255);
     top: 0;
     left: 0;
@@ -126,18 +132,24 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    top: 60px;
+    top: 50px;
   }
   .layout .aside>div{
     height: 100%;
   }
   .layout .header-right span{
-    font-size: 24px;
+    font-size: 18px;
     color: white;
     cursor: pointer ;
   }
-  .layout .header-right>div+div{
-    margin-left: 20px;
+  .layout .header-right>div{
+    margin-left: 8px;
+    padding: 0 8px;
+    cursor: pointer;
+    transition: .3s;
+  }
+  .layout .header-right>div:hover{
+    background: #167ad6;
   }
 
   .layout .header-right{
@@ -151,15 +163,16 @@
     position: absolute;
     font-size: 26px;
     right: 0;
-    top: 17px;
+    top: 12px;
     color: white;
     cursor: pointer;
     transition: .3s;
   }
 
   .layout .main{
-    padding-top: 60px;
+    padding-top: 50px;
     padding-left: 250px;
+    padding-right: 10px;
     transition: .4s;
     overflow-y: auto;
   }
@@ -173,7 +186,11 @@
     transform: rotate(45deg);
   }
 /*-----  header end  -----*/
-
+.head-tags{
+  padding-top: 10px
+}
+.el-tabs__header{
+}
 
 </style>
 

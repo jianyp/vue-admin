@@ -21,17 +21,21 @@ const state={
       {menuName:"导航四",url:"/4",icon:"",root:true,}
     ],
     // 头部快捷导航
-    editableTabsValue:"1",
-    editableTabs: [],
-    tabIndex: 1
+    editableTabsValue:sessionStorage.getItem("editableTabsValue") ||"1",
+    editableTabs:sessionStorage.getItem("editableTabs")||[],
 }
 
 const mutations= {
   addTag(state,obj) {
     state.editableTabs.push(obj);
   },
+
   loginSuccess(state,val){
     state.token = val;
+  },
+  saveTag(state){
+    sessionStorage.setItem("editableTabsValue",state.editableTabsValue);
+    sessionStorage.setItem("editableTabs",state.editableTabs);
   }
 }
 export default new Vuex.Store({
