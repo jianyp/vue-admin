@@ -1,18 +1,17 @@
 <template>
     <div class="home">
-      i am home2
-      <jTable
+      <eTable
       :tableData="tableData"
       :name="tableName"
       :pageSize="10"
       dataurl="api/table"
       >
-      </jTable>
+      </eTable>
     </div>
 </template>
 
 <script>
-    import jTable from "@/views/pages/table/index";
+    import eTable from "@/views/pages/table/index";
     import {getTable} from '@/api/api.js'
     export default {
         props: {
@@ -20,6 +19,7 @@
         data(){
           return{
               tableName:"table1",
+              age:45,
               tableData: [{
                   date: '2016-05-02',
                   name: '王小虎',
@@ -49,7 +49,7 @@
 
         },
         components:{
-            jTable
+            eTable
         }
     };
 </script>

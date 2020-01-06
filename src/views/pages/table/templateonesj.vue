@@ -4,22 +4,14 @@
       :data="tableData"
       v-loading="loading"
       style="width: 100%"
-      :row-class-name="tableRowClassName"
       border
       class="etables"
       :default-sort="{prop: 'date', order: 'descending'}"
       @row-dblclick="changePage"
-      @cell-click="tabClick"
-      @select="selectRow"
-      @select-all="selectRow"
     >
     <el-table-column
-      type="selection"
-      width="55">
-    </el-table-column>
-    <el-table-column
       type="index"
-      label="项次"
+      label=""
       width="50">
     </el-table-column>
       <el-table-column
@@ -55,7 +47,7 @@
 </template>
 <script>
 export default {
-  name: "eTable",
+  name: "jcTable",
   props: {
     name: {
       type: String
@@ -66,7 +58,11 @@ export default {
     },
     dataurl: {
       type: String
+    },
+    tableColumn:{
+      type:Array
     }
+    
   },
   data() {
     return {
@@ -79,32 +75,32 @@ export default {
       show:false,
       currentPage: 1,
       loading: true,
-      tableColumn: [
-        {
-          name: "日期",
-          width: "",
-          prop: "date",
-          show: true,
-          lock: false,
-          sort: true
-        },
-        {
-          name: "姓名",
-          width: "",
-          prop: "name",
-          show: true,
-          lock: true,
-          sort: true
-        },
-        {
-          name: "地址",
-          width: "",
-          prop: "address",
-          show: true,
-          lock: true,
-          sort: true
-        }
-      ]
+      // tableColumn: [
+      //   {
+      //     name: "日期",
+      //     width: "",
+      //     prop: "date",
+      //     show: true,
+      //     lock: false,
+      //     sort: true
+      //   },
+      //   {
+      //     name: "姓名",
+      //     width: "",
+      //     prop: "name",
+      //     show: true,
+      //     lock: true,
+      //     sort: true
+      //   },
+      //   {
+      //     name: "地址",
+      //     width: "",
+      //     prop: "address",
+      //     show: true,
+      //     lock: true,
+      //     sort: true
+      //   }
+      // ]
     };
   },
   mounted(){
@@ -126,18 +122,18 @@ export default {
       sessionStorage.setItem("currentPage", val);
     },
     getTabledata() {
-      this.$axios
-        .get("/user", {
-          params: {
-            ID: 12345
-          }
-        })
-        .then(function(res){
-          this.tableData = res.data;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      if (this.dataurl) {
+        this.$axios
+          .get(`${this.dataurl}`, {
+            params: {}
+          })
+          .then(function(res) {
+            this.tableData = res.data;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     },
     changePage(row){
       this.rowData = row;
@@ -154,27 +150,10 @@ export default {
     showInput(row, column, cell, event){
       this.isshow = !this.isshow;
     },
-    selectRow(selection,row){
-      this.delData = selection;
-      this.sendDel()
-    },
-    tabClick(row,col){
-      this.tabClickIndex = row.index;
-      this.tabClickLabel = col.label;
-      console.log(this.tabClickLabel)
-      console.log(this.tabClickIndex)
-    },
-    tableRowClassName({row,rowIndex}){
-      row.index = rowIndex
-      console.log(row)
-      console.log(rowIndex)
-    },
     inputBlur() {
       this.tabClickIndex = null
       this.tabClickLabel = ''
     }
-
-
   },
   components: {}
 };

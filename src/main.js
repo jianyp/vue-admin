@@ -13,8 +13,6 @@ import "./assets/common.css";
 import Fragment from "vue-fragment"
 Vue.use(Fragment.Plugin)
 
-
-
 // 引入axios
 import axios from 'axios';
 Vue.prototype.$axios = axios;

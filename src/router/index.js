@@ -19,6 +19,10 @@ export default new Router({
       component: Layout,
       children:[
         {
+          path:'/0',
+          component:()=> import('@/views/pages/home2/index')
+        },
+        {
           path:'/1-1',
           component:page
         },
@@ -40,16 +44,44 @@ export default new Router({
         },
         {
           path:'/4',
-          component:()=> import('@/views/pages/home/index')
+          component:()=> import('@/views/pages/template/templateone')
         },
         {
-          path:'/1-4-1',
-          component:()=> import('@/views/pages/home/index')
+          path:'/5',
+          component:()=> import('@/views/pages/template/templateone')
         },
         {
-          path:'/1-4-2',
-          component:()=> import('@/views/pages/home/index')
+          path:'/6',
+          component:()=> import('@/views/pages/template/templateone')
+        },
+        {
+          path:'/7',
+          component:()=> import('@/views/pages/template/templateone')
+        },
+        {
+          path:'/8-1',
+          component:()=> import('@/views/pages/template/templateone')
+        },
+        {
+          path:'/8-2',
+          component:()=> import('@/views/pages/template/templateone')
+        },
+        {
+          path:'/8-3',
+          component:()=> import('@/views/pages/ckgl/wlkcsd')
+        },
+        {
+          path:'/8-4',
+          component:()=> import('@/views/pages/template/templateone')
         }
+        // {
+        //   path:'/1-4-1',
+        //   component:()=> import('@/views/pages/home/index')
+        // },
+        // {
+        //   path:'/1-4-2',
+        //   component:()=> import('@/views/pages/home/index')
+        // }
       ]
     }
   ]
