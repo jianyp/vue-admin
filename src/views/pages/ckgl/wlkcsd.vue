@@ -5,7 +5,7 @@
       <pass v-if="pass"></pass>
     </div>
     <div class="tool-btn">
-      <el-button type="primary" icon="el-icon-edit" size="mini">新增</el-button>
+      <el-button type="primary" icon="el-icon-edit" size="mini" @click="addData()">新增</el-button>
       <el-button type="primary" icon="el-icon-share" size="mini" :disabled="pass">修改</el-button>
       <el-button type="primary" icon="el-icon-delete" size="mini" :disabled="pass" @click="delRowData()">删除</el-button>
       <el-button type="primary" icon="el-icon-search" size="mini" @click="queryData()">查询</el-button>
@@ -394,10 +394,7 @@ export default {
     },
     addRow() {
       let row = {
-        id: Math.random(),
-        date: "",
-        name: "",
-        address: ""
+       
       };
       this.tableData.push(row);
       console.log(this.tableData);
@@ -470,7 +467,7 @@ export default {
       }
     },
     //查询
-    queryData() {
+    queryData(){
       this.tableData1 = [];
       this.showtableData();
       this.tableData = [];
@@ -484,6 +481,11 @@ export default {
       });
     },
     //查询单身
+    addData(){
+      this.tableData=[];
+      this.showtableData;
+      this.addRow();
+    },
     queryB() {
       let param = new URLSearchParams();
       var kcxxsda = {
