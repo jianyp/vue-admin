@@ -117,7 +117,13 @@ export default {
         tab => tab.name !== targetName
       );
       // 跳转到当前激活tabs的对应路由页面
-      this.$router.push({ path: this.$store.state.editableTabsValue });
+      if(this.$store.state.editableTabs.length == 0){
+        this.$router.push({path:"/layoutindex"})
+      }else{
+        this.$router.push({ path: this.$store.state.editableTabsValue });
+      }
+      
+
     },
     select(tag) {
       console.log(tag);
