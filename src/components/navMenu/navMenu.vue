@@ -1,35 +1,5 @@
 <template>
-  <div>
-<!--    <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :router="true">-->
-<!--      <el-submenu index="1">-->
-<!--        <template slot="title">-->
-<!--          <i class="el-icon-location"></i>-->
-<!--          <span slot="title">导航一</span>-->
-<!--        </template>-->
-<!--          <el-menu-item index="1-1">选项1</el-menu-item>-->
-<!--          <el-menu-item index="1-2">选项2</el-menu-item>-->
-<!--          <el-menu-item index="1-3">选项3</el-menu-item>-->
-<!--        <el-submenu index="1-4">-->
-<!--          <span slot="title">选项4</span>-->
-<!--          <el-menu-item index="1-4-1">选项1</el-menu-item>-->
-<!--        </el-submenu>-->
-<!--      </el-submenu>-->
-<!--      <el-menu-item index="2">-->
-<!--        <i class="el-icon-menu"></i>-->
-<!--        <span slot="title">导航二</span>-->
-<!--      </el-menu-item>-->
-<!--      <el-menu-item index="3">-->
-<!--        <i class="el-icon-document"></i>-->
-<!--        <span slot="title">导航三</span>-->
-<!--      </el-menu-item>-->
-<!--      <el-menu-item index="4">-->
-<!--        <i class="el-icon-setting"></i>-->
-<!--        <span slot="title">导航四</span>-->
-<!--      </el-menu-item>-->
-<!--    </el-menu >-->
-
-      <!-- 根据实际情况做修改 -->
-
+  <!-- <fragment>
       <el-submenu  v-for="(item,index) in menuList" :key="item.menuName"  v-if="item.child" :index="item.url">
         <template slot="title">
           <i  class="el-icon-location"></i>
@@ -43,10 +13,34 @@
         <span>{{item.menuName}}</span>
       </el-menu-item>
 
-  </div>
+  </fragment> -->
+  <fragment>
+    <template v-for="list in this.menuList">
+      <el-submenu
+        index="1"
+        v-if="list.child.length>0"
+        :key="list.url"
+        :index="list.url"
+      >
+        <template slot="title" style="padding-left:10px">
+          <i :class="list.icon"></i>
+          <span slot="title">{{list.menuName}}</span>
+        </template>
+        <navMenu :menuList="list.child"></navMenu>
+      </el-submenu>
+      <el-menu-item
+        v-else
+        :index="list.url"
+        :key="list.menuName"
+        @click="addTags(list)"
+      >
+        <i :class="list.icon"></i>
+        <span>{{list.menuName}}</span>
+      </el-menu-item>
+    </template>
+  </fragment>
 </template>
 <script>
-
     export default {
         name:"navMenu",
         props: {
@@ -77,7 +71,6 @@
                 }
               })
             }
-            console.log(flag)
             if(!flag){
               this.$store.commit("addTag",obj)
             }

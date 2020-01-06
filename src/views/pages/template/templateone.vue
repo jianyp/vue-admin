@@ -44,6 +44,7 @@
         <span v-if="!pass">审核</span>
         <span v-else>撤销审核</span>
       </el-button>
+
     </div>
     <div>
       <el-tabs type="border-card" v-model="editableTabsValue">
@@ -74,7 +75,7 @@
             <p>表格头</p>
             <el-button @click="addRow()">添加行</el-button>
             <el-button @click="removeRow()">删除行</el-button>
-            <jcTable :tableData="tableData" :pageSize="10" data-url="api/table" @del="sendDel"></jcTable>
+            <jcTable :tableData="tableData" :pageSize="10" dataurl="http://localhost:8086/kcxxsd/test" @del="sendDel"></jcTable>
           </div>
         </el-tab-pane>
         <el-tab-pane name="2" label="数据浏览">
@@ -110,7 +111,6 @@ export default {
       changePagePrevBtn: true,
       changePageNextBtn: false,
       editableTabsValue: "1",
-      tableData: [],
        tableColumn: [
         {
           name: "日期",
@@ -137,6 +137,20 @@ export default {
           sort: true
         }
       ],
+      tableData: [
+        {
+          id: 1,
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          id: 2,
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄"
+        }
+      ], //单身
       tableData1: [
         {
           id: 1,
@@ -168,6 +182,18 @@ export default {
   mounted() {
     this.showtableData();
     this.countTableData();
+    // this.$axios({
+    //   method: "get",
+    //   url: "http://localhost:8086/kcxxsd/test",
+    //   data: {}
+    // })
+    //   .then(function(res) {
+    //     alert(res);
+    //     console.log(res);
+    //   })
+    //   .catch(function(err) {
+    //     console.log(err);
+    //   });
   },
   methods: {
     getMsgFormSon(val1, val2, val3) {
@@ -186,6 +212,7 @@ export default {
         address: ""
       };
       this.tableData.push(row);
+      console.log(this.tableData);
     },
     removeRow() {
       if (this.delData) {
@@ -284,7 +311,7 @@ export default {
   components: {
     jcTable,
     sjTable,
-  }
+    }
 };
 </script>
 

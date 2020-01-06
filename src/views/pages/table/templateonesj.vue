@@ -9,6 +9,7 @@
       sort-orders="['ascending', 'descending', 'default']"
       @row-dblclick="changePage"
       @sort-change="sortChange"
+
     >
     <el-table-column
       type="index"
@@ -75,6 +76,32 @@ export default {
       show:false,
       currentPage: 1,
       loading: true,
+      // tableColumn: [
+      //   {
+      //     name: "日期",
+      //     width: "",
+      //     prop: "date",
+      //     show: true,
+      //     lock: false,
+      //     sort: true
+      //   },
+      //   {
+      //     name: "姓名",
+      //     width: "",
+      //     prop: "name",
+      //     show: true,
+      //     lock: true,
+      //     sort: true
+      //   },
+      //   {
+      //     name: "地址",
+      //     width: "",
+      //     prop: "address",
+      //     show: true,
+      //     lock: true,
+      //     sort: true
+      //   }
+      // ]
     };
   },
   mounted(){
@@ -96,18 +123,18 @@ export default {
       sessionStorage.setItem("currentPage", val);
     },
     getTabledata() {
-      this.$axios
-        .get("/user", {
-          params: {
-            ID: 12345
-          }
-        })
-        .then(function(res){
-          this.tableData = res.data;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      if (this.dataurl) {
+        this.$axios
+          .get(`${this.dataurl}`, {
+            params: {}
+          })
+          .then(function(res) {
+            this.tableData = res.data;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     },
     changePage(row){
       this.rowData = row;
@@ -135,7 +162,6 @@ export default {
   components: {}
 };
 </script>
-
 
 <style>
 

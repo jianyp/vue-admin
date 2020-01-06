@@ -1,13 +1,27 @@
 <template>
   <div class="home">
-
     <el-table
       :data="tableData"
       v-loading="loading"
       style="width: 100%"
+      :row-class-name="tableRowClassName"
       border
+      class="etables"
       :default-sort="{prop: 'date', order: 'descending'}"
+      @row-dblclick="changePage"
+      @cell-click="tabClick"
+      @select="selectRow"
+      @select-all="selectRow"
     >
+    <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>
+    <el-table-column
+      type="index"
+      label="项次"
+      width="50">
+    </el-table-column>
       <el-table-column
         v-for="(item,index) in tableColumn"
         :key="index"
@@ -17,7 +31,14 @@
         :resizable="!item.lock"
         :width="item.width"
         :formatter="item.formatter"
-      ></el-table-column>
+      >
+      <template slot-scope="scope">
+        <span v-if="scope.row.index === tabClickIndex && tabClickLabel === item.name">
+          <el-input size="small" v-model="scope.row[item.prop]" @blur="inputBlur" autofocus="autofocus"></el-input>
+        </span>
+         <span v-else>{{scope.row[item.prop]}}</span>
+      </template>
+      </el-table-column>
     </el-table>
     <div class="block">
       <el-pagination
@@ -32,10 +53,9 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: "jTable",
+  name: "eTable",
   props: {
     name: {
       type: String
@@ -50,13 +70,19 @@ export default {
   },
   data() {
     return {
-        show:false,
+      tabClickIndex:null,
+      tabClickLabel:"",
+      isshow:false,
+      delData:[],
+      rowData:{},
+      showTabs:"",
+      show:false,
       currentPage: 1,
       loading: true,
       tableColumn: [
         {
           name: "日期",
-          width: "120",
+          width: "",
           prop: "date",
           show: true,
           lock: false,
@@ -64,7 +90,7 @@ export default {
         },
         {
           name: "姓名",
-          width: "120",
+          width: "",
           prop: "name",
           show: true,
           lock: true,
@@ -72,7 +98,7 @@ export default {
         },
         {
           name: "地址",
-          width: "120",
+          width: "",
           prop: "address",
           show: true,
           lock: true,
@@ -81,7 +107,7 @@ export default {
       ]
     };
   },
-  mounted() {
+  mounted(){
     console.log(this.dataurl);
     this.getTabledata();
     setTimeout(()=>{
@@ -107,13 +133,48 @@ export default {
           }
         })
         .then(function(res){
-          console.log(res);
-          res.total
+          this.tableData = res.data;
         })
         .catch(function(error) {
           console.log(error);
         });
+    },
+    changePage(row){
+      this.rowData = row;
+      this.showTabs = "1";
+      this.sendData();
+    },
+    sendData(){
+        //func: 是父组件指定的传数据绑定的函数，this.msg:子组件给父组件传递的数据
+        this.$emit('func',this.rowData,this.showTabs,this.delData)
+    },
+    sendDel(){
+      this.$emit('del',this.delData)
+    },
+    showInput(row, column, cell, event){
+      this.isshow = !this.isshow;
+    },
+    selectRow(selection,row){
+      this.delData = selection;
+      this.sendDel()
+    },
+    tabClick(row,col){
+      this.tabClickIndex = row.index;
+      this.tabClickLabel = col.label;
+      console.log(this.tabClickLabel)
+      console.log(this.tabClickIndex)
+    },
+    tableRowClassName({row,rowIndex}){
+      row.index = rowIndex
+      console.log(row)
+      console.log(rowIndex)
+    },
+    inputBlur() {
+      this.tabClickIndex = null
+      this.tabClickLabel = ''
     }
+
+
   },
   components: {}
 };
@@ -121,5 +182,6 @@ export default {
 
 
 <style>
+
 </style>
 

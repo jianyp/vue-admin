@@ -3,13 +3,13 @@
       <div>
         <el-button @click="newtableVisible = true">新增主表</el-button>
       </div>
-      <jTable
+      <eTable
         :tableData="tableData"
         :name="tableName"
         :pageSize="10"
         dataurl="api/table"
       >
-      </jTable>
+      </eTable>
 
       <el-dialog
         title="新增主表"
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-
+    import eTable from "@/views/pages/table/index";
     export default {
         props: {
         },
@@ -51,6 +51,7 @@
             }
         },
         components:{
+          eTable
         }
     };
 </script>

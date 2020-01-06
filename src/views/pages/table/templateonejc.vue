@@ -13,17 +13,10 @@
       @select="selectRow"
       @select-all="selectRow"
     >
-    <el-table-column
-      type="selection"
-      width="55">
-    </el-table-column>
-    <el-table-column
-      type="index"
-      label="项次"
-      width="50">
-    </el-table-column>
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column type="index" label="项次" width="50"></el-table-column>
       <el-table-column
-        v-for="(item,index) in tableColumn"
+        v-for="(item,index) in tableColumnB"
         :key="index"
         :label="item.name"
         :sortable="item.sort"
@@ -32,12 +25,17 @@
         :width="item.width"
         :formatter="item.formatter"
       >
-      <template slot-scope="scope">
-        <span v-if="scope.row.index === tabClickIndex && tabClickLabel === item.name">
-          <el-input size="small" v-model="scope.row[item.prop]" @blur="inputBlur" autofocus="autofocus"></el-input>
-        </span>
-         <span v-else>{{scope.row[item.prop]}}</span>
-      </template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.index === tabClickIndex && tabClickLabel === item.name">
+            <el-input
+              size="small"
+              v-model="scope.row[item.prop]"
+              @blur="inputBlur"
+              autofocus="autofocus"
+            ></el-input>
+          </span>
+          <span v-else>{{scope.row[item.prop]}}</span>
+        </template>
       </el-table-column>
     </el-table>
     <div class="block">
@@ -66,54 +64,64 @@ export default {
     },
     dataurl: {
       type: String
+    },
+    tableColumnB: {
+      type: Array
     }
   },
   data() {
     return {
-      tabClickIndex:null,
-      tabClickLabel:"",
-      isshow:false,
-      delData:[],
-      rowData:{},
-      showTabs:"",
-      show:false,
+      tabClickIndex: null,
+      tabClickLabel: "",
+      isshow: false,
+      delData: [],
+      rowData: {},
+      showTabs: "",
+      show: false,
       currentPage: 1,
       loading: true,
-      tableColumn: [
-        {
-          name: "日期",
-          width: "800",
-          prop: "date",
-          show: true,
-          lock: false,
-          sort: true
-        },
-        {
-          name: "姓名",
-          width: "800",
-          prop: "name",
-          show: true,
-          lock: true,
-          sort: true
-        },
-        {
-          name: "地址",
-          width: "800",
-          prop: "address",
-          show: true,
-          lock: true,
-          sort: true
-        }
-      ]
+      // tableColumnB: [
+      //   {
+      //     name: "日期",
+      //     width: "",
+      //     prop: "date",
+      //     show: true,
+      //     lock: false,
+      //     sort: true
+      //   },
+      //   {
+      //     name: "XX",
+      //     width: "",
+      //     prop: "date",
+      //     show: true,
+      //     lock: false,
+      //     sort: true
+      //   },
+      //   {
+      //     name: "姓名",
+      //     width: "",
+      //     prop: "name",
+      //     show: true,
+      //     lock: true,
+      //     sort: true
+      //   },
+      //   {
+      //     name: "地址",
+      //     width: "",
+      //     prop: "address",
+      //     show: true,
+      //     lock: true,
+      //     sort: true
+      //   }
+      // ]
     };
   },
-  mounted(){
+  mounted() {
     console.log(this.dataurl);
     this.getTabledata();
-    setTimeout(()=>{
-        this.loading = false
-      },1000)
-   
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
   },
   methods: {
     formatter(row, column) {
@@ -127,20 +135,20 @@ export default {
       sessionStorage.setItem("currentPage", val);
     },
     getTabledata() {
-      this.$axios
-        .get("/user", {
-          params: {
-            ID: 12345
-          }
-        })
-        .then(function(res){
-          this.tableData = res.data;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      if (this.dataurl) {
+        this.$axios
+          .get(`${this.dataurl}`, {
+            params: {}
+          })
+          .then(function(res) {
+            this.tableData = res.data;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     },
-    changePage(row){
+    changePage(row) {
       this.rowData = row;
       this.showTabs = "1";
       this.sendData();
@@ -174,8 +182,6 @@ export default {
       this.tabClickIndex = null
       this.tabClickLabel = ''
     }
-
-
   },
   components: {}
 };

@@ -13,8 +13,6 @@ import "./assets/common.css";
 import Fragment from "vue-fragment"
 Vue.use(Fragment.Plugin)
 
-
-
 // 引入axios
 import axios from 'axios';
 Vue.prototype.$axios = axios;
@@ -28,7 +26,9 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
-
+// 全局审核样式组件
+import pass from './components/pass';
+Vue.component('pass',pass);
 
 // 环境的切换
 // 全局请求基础地址

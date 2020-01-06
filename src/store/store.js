@@ -7,18 +7,35 @@ const state={
   token:"",
   // 菜单
   menuList:[
-      {menuName:"导航一",url:"/1",icon:"",root:true,child:[
-          {menuName:"菜单一",url:"/1-1",icon:""},
-          {menuName:"菜单二",url:"/1-2",icon:""},
-          {menuName:"菜单三",url:"/1-3",icon:""},
-          {menuName:"菜单四",url:"/1-4",icon:"",child:[
-              {menuName:"三级菜单1",url:"/1-4-1",icon:""},
-              {menuName:"三级菜单2",url:"/1-4-2",icon:""}
+      {menuName:"首页",url:"/0",icon:"el-icon-location",child:[]},
+      {menuName:"基础信息",url:"/1",icon:"el-icon-location",child:[
+          {menuName:"菜单一",url:"/1-1",icon:"el-icon-location",child:[]},
+          {menuName:"菜单二",url:"/1-2",icon:"el-icon-location",child:[]},
+          {menuName:"菜单三",url:"/1-3",icon:"el-icon-location",child:[]},
+          {menuName:"菜单四",url:"/1-4",icon:"el-icon-location",child:[
+              // {menuName:"三级菜单1",url:"/1-4-1",icon:"",child:[]},
+              // {menuName:"三级菜单2",url:"/1-4-2",icon:"",child:[]}
            ]}
         ]},
-      {menuName:"导航二",url:"/2",icon:"",root:true,},
-      {menuName:"导航三",url:"/3",icon:"",root:true,},
-      {menuName:"导航四",url:"/4",icon:"",root:true,}
+      {menuName:"工艺信息",url:"/2",icon:"el-icon-location",child:[]},
+      {menuName:"合同管理",url:"/3",icon:"el-icon-location",child:[]},
+      {menuName:"生产管理",url:"/4",icon:"el-icon-location",child:[]},
+      {menuName:"质量管理",url:"/5",icon:"el-icon-location",child:[]},
+      {menuName:"设备管理",url:"/6",icon:"el-icon-location",child:[]},
+      {menuName:"采购管理",url:"/7",icon:"el-icon-location",child:[]},
+      {menuName:"仓库管理",url:"",icon:"el-icon-location",child:[
+        {menuName:"仓库信息设置",url:"/8-1",icon:"el-icon-location",child:[]},
+        {menuName:"物料库存查看",url:"/8-2",icon:"el-icon-location",child:[]},
+        {menuName:"物料库存锁定",url:"/8-3",icon:"el-icon-location",child:[]},
+        {menuName:"产品入库",url:"/8-4",icon:"el-icon-location",child:[]},
+        {menuName:"产品出库",url:"/8-5",icon:"el-icon-location",child:[]},
+        {menuName:"产品报废",url:"/8-6",icon:"el-icon-location",child:[]},
+        {menuName:"调拨入库",url:"/8-7",icon:"el-icon-location",child:[]},
+        {menuName:"调拨出库",url:"/8-8",icon:"el-icon-location",child:[]},
+        {menuName:"物料拆解",url:"/8-9",icon:"el-icon-location",child:[]},
+        {menuName:"物料组装",url:"/8-10",icon:"el-icon-location",child:[]}
+      ]}
+      // {menuName:"系统设置",url:"/4",icon:"el-icon-location",child:[]},
     ],
     // 头部快捷导航
     editableTabsValue:sessionStorage.getItem("editableTabsValue") ||"1",
