@@ -495,8 +495,8 @@ export default {
       this.selectData = [];
     },
     appendData() {
+      this.tableData.splice(this.tableData.length-1,1);
       this.tableData = this.tableData.concat(this.selectData);
-      this.selectData = [];
       console.log(this.tableData);
     },
     handleClose(done) {

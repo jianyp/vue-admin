@@ -50,7 +50,7 @@ export default {
     return {
       activeNames: ["1", "2"],
       tableData: [
-        {kcxxsdb003:"单号1",kcxxsdb004:"产品名称"},{kcxxsdb003:"单号1",kcxxsdb004:"产品名称"},{kcxxsdb003:"单号1",kcxxsdb004:"产品名称"}
+        {kcxxsdb003:"单号1",kcxxsdb004:"产品名称"},{kcxxsdb003:"单号2",kcxxsdb004:"产品名称"},{kcxxsdb003:"单号3",kcxxsdb004:"产品名称"}
       ],
       form: {
         name:"",
