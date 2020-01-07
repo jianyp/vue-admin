@@ -95,17 +95,14 @@
           <div>
             <el-row :gutter="30">
               <el-col :span="8">
-                  <el-input placeholder="锁定单号" v-model="kcxxsda001">
-                    <template slot="prepend">锁定单号</template>
-                    <i slot="suffix" class="el-icon-search el-input__icon" @click="a()"></i>
-                  </el-input>
+                <el-input placeholder="锁定单号" v-model="kcxxsda001">
+                  <template slot="prepend">锁定单号</template>
+                </el-input>
               </el-col>
-              <el-col :span="8" class="date-input">
-                <div class="date-block">锁定日期</div>
-                <!-- <el-input placeholder="锁定日期" v-model="kcxxsda002">
+              <el-col :span="8">
+                <el-input placeholder="锁定日期" v-model="kcxxsda002">
                   <template slot="prepend">锁定日期</template>
-                </el-input>-->
-                <el-date-picker v-model="kcxxsda002" type="date" placeholder="选择日期"></el-date-picker>
+                </el-input>
               </el-col>
             </el-row>
 
@@ -151,14 +148,9 @@
             </el-row>
           </div>
           <div>
-            <div class="jc-header">
-              <p>锁定\解锁物料表</p>
-              <div>
-                <el-button size="mini" icon="el-icon-plus" plain @click="addRow()">添加行</el-button>
-                <el-button size="mini" icon="el-icon-minus" plain @click="removeRow()">删除行</el-button>
-              </div>
-            </div>
-
+            <p>表格头</p>
+            <el-button @click="addRow()">添加行</el-button>
+            <el-button @click="removeRow()">删除行</el-button>
             <!-- 单身表格 -->
             <jcTable
               :tableData="tableData"
@@ -170,7 +162,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane name="2" label="数据浏览">
-          <p>物料库存锁定一览表</p>
+          <p>表格头</p>
           <sjTable
             :tableData="tableData1"
             :pageSize="10"
@@ -292,8 +284,7 @@ export default {
           prop: "kcxxsdb003",
           show: true,
           lock: false,
-          sort: true,
-          search:true
+          sort: true
         },
         {
           name: "产品名称",
@@ -425,9 +416,6 @@ export default {
     this.decisionBtn();
   },
   methods: {
-    a(){
-      alert(111);
-    },
     getTableData() {
       let param = {
         pageSize: this.sjPageSize,
@@ -471,7 +459,7 @@ export default {
       this.kcxxsda006 = val1.kcxxsda006;
       this.kcxxsda007 = val1.kcxxsda007;
       this.kcxxsda015 = val1.kcxxsda015;
-      //标签页 基础信息/数据浏览
+
       this.editableTabsValue = val2;
       this.delData = val3;
 
@@ -486,7 +474,7 @@ export default {
     addRow() {
       let row = {};
       this.tableData.push(row);
-      // console.log(this.tableData);
+      //console.log(this.tableData);
     },
     removeRow() {
       if (this.delData) {
@@ -579,29 +567,19 @@ export default {
     },
     //新增功能
     addData() {
-      //this.templateListA = this.tableData1;
+      this.templateListA = this.tableData1;
 
-      //this.showtableData();
+      this.tableData = [];
+      this.tableData1 = [];
+      this.editableTabsValue = "1";
+      this.showtableData();
+      this.addRow();
       this.btnFlag = 1;
       this.inputStatusBtn();
-
-      this.editableTabsValue = "1";
-      this.tableData = [];
-      this.addRow();
-
-      this.kcxxsda001 = "";
-      this.kcxxsda002 = "";
-      this.kcxxsda003 = "";
-      this.kcxxsda004 = "";
-      this.kcxxsda005 = "";
-      this.kcxxsda006 = "";
-      this.kcxxsda007 = "";
-      this.kcxxsda015 = "";
     },
     //修改
-
     editData() {
-      this.editableTabsValue = "1";
+      this.templateListA = this.tableData1;
       this.btnFlag = 2;
       this.inputStatusBtn();
     },
@@ -637,29 +615,28 @@ export default {
     },
     //查询功能
     queryData() {
-      //this.templateListA = this.tableData1;
-      this.editableTabsValue = "1";
+      this.templateListA = this.tableData1;
+      this.inputStatusBtn();
+      this.tableData1 = [];
       this.tableData = [];
+      this.showtableData();
+      this.editableTabsValue = "1";
       this.addRow();
       this.btnFlag = 3;
-      this.inputStatusBtn();
-      this.kcxxsda001 = "";
-      this.kcxxsda002 = "";
-      this.kcxxsda003 = "";
-      this.kcxxsda004 = "";
-      this.kcxxsda005 = "";
-      this.kcxxsda006 = "";
-      this.kcxxsda007 = "";
-      this.kcxxsda015 = "";
-      alert(this.deleteBtn);
+
+      // this.$axios({
+      //   method: "post",
+      //   url: "http://localhost:8086/kcxxsd/listB",
+      //   data: { kcxxsda001: this.kcxxsda001 }
+      // }).then(response => {
+      //   this.tableData = response.data.data;
+      // });
     },
 
     //确定按钮
     commitMed() {
-      this.checkBtn = false;
       if ((this.btnFlag = 1)) {
         //执行添加请求 添加成功，将当前数据放在第一条，
-        //this.countTableData();
         var kcxxsda = {
           kcxxsda001: this.kcxxsda001,
           kcxxsda002: this.kcxxsda002,
@@ -670,40 +647,21 @@ export default {
           kcxxsda007: this.kcxxsda007,
           kcxxsda015: this.kcxxsda015
         };
-        this.tableData1.splice(this.sjPageSize - 1, 1);
-        this.tableData1.push(kcxxsda);
-        //this.tableData1 = this.templateListA;
+        this.templateListA.splice(this.sjPageSize - 1, 1);
+        this.templateListA.push(kcxxsda);
+        this.tableData1 = this.templateListA;
         this.showtableIndex = this.sjPageSize - 1;
         this.preNextPage();
         this.decisionBtn();
         this.editBtn = false;
         this.deleteBtn = false;
-        this.tableData.forEach(el => {
-          el.kcxxsdb001 = this.kcxxsda001;
-          el.kcxxsdb002 = el.index + 1;
-        });
-        console.log(this.tableData);
-
-        this.queryB();
-        this.btnFlag = 0;
-        // alert(this.changePagePrevBtn + "&&" + this.changePageNextBtn);
-      } else if (btnFlag == 2) {
-        //修改
-        this.tableData.forEach(el => {
-          el.kcxxsdb001 = this.kcxxsda001;
-          el.kcxxsdb002 = el.index + 1;
-        });
-        console.log(this.tableData);
-        this.btnFlag = 0;
-      } else if (btnFlag == 3) {
-        //查询
-        console.log(this.tableData[0]);
-        this.btnFlag = 0;
+        alert(this.changePagePrevBtn + "&&" + this.changePageNextBtn);
       }
     },
 
     //取消
     cancelMed() {
+      this.preNextPage();
       this.cancelBtn = true;
       this.commitBtn = true;
       let param = {
@@ -715,13 +673,13 @@ export default {
         //console.log(response.data);
         //数据浏览 赋值
         this.tableData1 = response.data;
-        alert(this.showtableIndex);
         this.showtableDataChild(this.showtableIndex);
-        this.preNextPage();
+
         this.countTableData();
         this.checkBtn = false;
         this.newBtn = false;
         this.selectBtn = false;
+        this.tableData1 = this.templateListA;
         this.isCheck();
       });
     },
@@ -752,17 +710,17 @@ export default {
       }
     },
     preNextPage() {
-      //alert(this.showtableIndex + "&&" + this.templateListA.length);
-      if (this.showtableIndex >= 0 && this.tableData1.length > 1) {
+      alert(this.showtableIndex + "&&" + this.templateListA.length);
+      if (this.showtableIndex >= 0 && this.templateListA.length > 1) {
         this.changePagePrevBtn = false;
       }
       if (
-        this.showtableIndex < this.tableData1.length - 1 &&
-        this.tableData1.length > 1
+        this.showtableIndex < this.templateListA.length - 1 &&
+        this.templateListA.length > 1
       ) {
         this.changePageNextBtn = false;
       }
-      // alert(this.changePagePrevBtn + "&&" + this.changePageNextBtn);
+      alert(this.changePagePrevBtn + "&&" + this.changePageNextBtn);
     },
     // 审核方法
     checkPass() {
@@ -771,32 +729,34 @@ export default {
     //判断当前单头审核状态
     isCheck() {
       if (this.tableData1 == []) {
-        this.pass = false;
         return;
       }
-      //alert(this.tableData1[this.showtableIndex].kcxxsda008);
-      if (this.btnFlag == 0) {
-        if (this.tableData1[this.showtableIndex].kcxxsda008 == "Y") {
-          this.pass = true;
-          this.editBtn = true;
-          this.deleteBtn = true;
-        } else {
-          this.pass = false;
-          this.editBtn = false;
-          this.deleteBtn = false;
-        }
+      if (this.tableData1[this.showtableIndex].kcxxsda008 != "Y") {
+        this.pass = false;
+      } else {
+        this.pass = true;
       }
     }
   },
-
   watch: {
     kcxxsda001() {
+      if(this.pass==false){
+this.editBtn=false;
+this.deleteBtn=false;
+      }
       if (this.kcxxsda001 != "") {
         this.isCheck();
       }
-      if (this.pass == false && this.kcxxsda001 != "" && this.btnFlag == 0) {
-        this.editBtn = false;
-        this.deleteBtn = false;
+      if (this.tableData1 != []) {
+        return;
+      }
+      if (
+        this.tableData1 != [] &&
+        this.tableData1[this.showtableIndex].kcxxsda008 != "Y"
+      ) {
+        this.pass = false;
+      } else {
+        this.pass = true;
       }
       this.queryB();
     },
@@ -805,7 +765,17 @@ export default {
     },
     sjPageSize() {
       this.getTableData();
-    }
+    },
+  
+    
+    // btnFlag() {
+    //   if (this.btnFlag != 0) {
+    //     this.cancelBtn = false;
+    //     this.commitBtn = false;
+    //     //this.changePagePrevBtn=true;
+    //     //this.changePageNextBtn=true;
+    //   }
+    // }
   },
   components: {
     jcTable,
@@ -825,35 +795,5 @@ export default {
 }
 .tool-btn {
   padding: 10px 0;
-}
-.jc-header p {
-  background: #409eff;
-  padding: 10px;
-  margin: 20px 0 10px 0;
-  color: #fff;
-}
-.date-block {
-  border: 1px solid #dcdfe6;
-  color: #909399;
-  background: #f5f7fa;
-  border-radius: 4px 0 0 4px;
-  padding: 8px 20px;
-  vertical-align: middle;
-  font-size: 14px;
-  white-space: nowrap;
-}
-.date-input {
-  display: flex;
-}
-.date-input .el-date-editor {
-  flex-grow: 1;
-}
-
-
-</style>
-
-<style>
-.template-one .el-row{
-  margin: 5px 0 ;
 }
 </style>

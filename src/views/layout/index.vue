@@ -2,8 +2,9 @@
   <div class="layout">
     <div class="header">
       <div class="header-left left">
-        <span>log</span>
-        <div class="el-icon-s-fold" :class="isCollapse?'rotate':''" @click="menuHander()"></div>
+        <div style="font-size:28px;text-align:left;font-weight:bold;"><span style="color:white;">BangPu-MES</span></div>
+        <!-- <span>log</span> -->
+        <div class="el-icon-s-fold" :class="isCollapse?'rotate':''" @click="menuHander()" style=""></div>
       </div>
       <div class="header-right right">
         <div>

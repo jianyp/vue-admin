@@ -32,7 +32,9 @@
               v-model="scope.row[item.prop]"
               @blur="inputBlur"
               autofocus="autofocus"
-            ></el-input>
+            >
+            <i v-if="item.search" slot="suffix" class="el-icon-search el-input__icon" @click="a()"></i>
+            </el-input>
           </span>
           <span v-else>{{scope.row[item.prop]}}</span>
         </template>
@@ -163,6 +165,7 @@ export default {
     showInput(row, column, cell, event){
       this.isshow = !this.isshow;
     },
+
     selectRow(selection,row){
       this.delData = selection;
       this.sendDel()

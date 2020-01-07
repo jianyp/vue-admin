@@ -33,8 +33,8 @@ Vue.component('pass',pass);
 // 环境的切换
 // 全局请求基础地址
 if (process.env.NODE_ENV == 'development') {
-
-  axios.defaults.baseURL = 'http://localhost:8080';}
+  axios.defaults.baseURL = '/api';
+}
 else if (process.env.NODE_ENV == 'debug') {
   axios.defaults.baseURL = 'https://www.ceshi.com';
 }
@@ -61,7 +61,7 @@ axios.interceptors.response.use(
   response => {
     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     // 否则的话抛出错误
-    if (response.status === 200) {
+    if (response.data.code === 200) {
       return Promise.resolve(response);
     } else {
       return Promise.reject(response);
@@ -69,12 +69,12 @@ axios.interceptors.response.use(
   },
   // 其他错误状态码处理
   error => {
-    if (error.response.status) {
-      switch (error.response.status) {
+    if (error.response.data.code) {
+      switch (error.response.data.code) {
         // 401: 未登录
         // 未登录则跳转登录页面，并携带当前页面的路径
         // 在登录成功后返回当前页面，这一步需要在登录页操作。
-        case 401:
+        case 201:
           router.replace({
             path: '/login',
             query: {
@@ -87,7 +87,7 @@ axios.interceptors.response.use(
         // 登录过期对用户进行提示
         // 清除本地token和清空vuex中token对象
         // 跳转登录页面
-        case 403:
+        case 203:
           Vue.prototype.$message({
             message: '登录过期，请重新登录',
             type:"warning"

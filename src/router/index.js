@@ -39,7 +39,7 @@ export default new Router({
         },
         {
           path:'/2',
-          component:()=> import('@/views/pages/home2/index')
+          component:()=> import('@/views/pages/ckgl/addtest')
         },
         {
           path:'/1-2',

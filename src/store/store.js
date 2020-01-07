@@ -23,6 +23,7 @@ const state={
       {menuName:"质量管理",url:"/5",icon:"el-icon-location",child:[]},
       {menuName:"设备管理",url:"/6",icon:"el-icon-location",child:[]},
       {menuName:"采购管理",url:"/7",icon:"el-icon-location",child:[]},
+      
       {menuName:"仓库管理",url:"",icon:"el-icon-location",child:[
         {menuName:"仓库信息设置",url:"/8-1",icon:"el-icon-location",child:[]},
         {menuName:"物料库存查看",url:"/8-2",icon:"el-icon-location",child:[]},
