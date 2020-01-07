@@ -41,19 +41,23 @@ const state={
     // 头部快捷导航
     editableTabsValue:sessionStorage.getItem("editableTabsValue") ||"1",
     editableTabs:sessionStorage.getItem("editableTabs")||[],
+    // 弹出框表格选中数据
+    selectRowData:[]
 }
 
 const mutations= {
   addTag(state,obj) {
     state.editableTabs.push(obj);
   },
-
   loginSuccess(state,val){
     state.token = val;
   },
   saveTag(state){
     sessionStorage.setItem("editableTabsValue",state.editableTabsValue);
     sessionStorage.setItem("editableTabs",state.editableTabs);
+  },
+  selectRow(state,val){
+    state.selectRowData = val;
   }
 }
 export default new Vuex.Store({

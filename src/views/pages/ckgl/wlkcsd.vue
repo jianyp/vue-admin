@@ -5,6 +5,7 @@
       <pass v-if="pass"></pass>
     </div>
     <div class="tool-btn">
+      <el-button @click="dialogVisible = true" size="mini" type="primary">弹窗（测试用）</el-button>
       <el-button
         type="primary"
         icon="el-icon-edit"
@@ -19,6 +20,9 @@
         :disabled="pass || editBtn"
         @click="editData()"
       >修改</el-button>
+
+      <el-button type="primary" icon="el-icon-edit" size="mini" @click="addData()">新增</el-button>
+      <el-button type="primary" icon="el-icon-share" size="mini" :disabled="pass">修改</el-button>
       <el-button
         type="primary"
         icon="el-icon-delete"
@@ -95,10 +99,10 @@
           <div>
             <el-row :gutter="30">
               <el-col :span="8">
-                  <el-input placeholder="锁定单号" v-model="kcxxsda001">
-                    <template slot="prepend">锁定单号</template>
-                    <i slot="suffix" class="el-icon-search el-input__icon" @click="a()"></i>
-                  </el-input>
+                <el-input placeholder="锁定单号" v-model="kcxxsda001">
+                  <template slot="prepend">锁定单号</template>
+                  <i slot="suffix" class="el-icon-search el-input__icon" @click="a()"></i>
+                </el-input>
               </el-col>
               <el-col :span="8" class="date-input">
                 <div class="date-block">锁定日期</div>
@@ -163,7 +167,7 @@
             <jcTable
               :tableData="tableData"
               :pageSize="10"
-              data-url
+              :pagination="pagination"
               @del="sendDel"
               :tableColumnB="tableColumnB"
             ></jcTable>
@@ -182,6 +186,21 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      v-dialogDrag
+      width="60%"
+      :before-close="handleClose"
+    >
+      <tempTwo @sendSelectData="childSelectData"></tempTwo>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" type="primary" @click="dialogVisible = false,coverData()">确 定</el-button>
+        <el-button size="small" type="primary" @click="dialogVisible = false,appendData()">追 加</el-button>
+        <el-button size="small" type="primary" @click="dialogVisible = false">当前行插入</el-button>
+        <el-button size="small" type="primary" @click="dialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -189,9 +208,14 @@
 import jcTable from "@/views/pages/table/templateonejc";
 import sjTable from "@/views/pages/table/templateonesj";
 import { getTableDataA } from "@/api/ckgl/ckglapi.js";
+import tempTwo from "@/views/pages/template/templatetwo";
+
 export default {
   data() {
     return {
+      // 是否分页
+      pagination: true,
+      selectData: [],
       kcxxsda001: "",
       kcxxsda002: "",
       kcxxsda003: "",
@@ -201,6 +225,7 @@ export default {
       kcxxsda007: "",
       kcxxsda015: "",
       templateListA: [],
+      dialogVisible: false, //弹出框是否显示
       delData: "", //复选框选中数据
       showtableIndex: 0, //当前数据条数
       changePagePrevBtn: true,
@@ -293,7 +318,7 @@ export default {
           show: true,
           lock: false,
           sort: true,
-          search:true
+          search: true
         },
         {
           name: "产品名称",
@@ -425,7 +450,7 @@ export default {
     this.decisionBtn();
   },
   methods: {
-    a(){
+    a() {
       alert(111);
     },
     getTableData() {
@@ -461,6 +486,26 @@ export default {
       //   this.queryB();
       // });
     },
+    // 获取弹窗选择的数据
+    childSelectData(val) {
+      this.selectData = val;
+    },
+    coverData() {
+      this.tableData = this.selectData;
+      this.selectData = [];
+    },
+    appendData() {
+      this.tableData = this.tableData.concat(this.selectData);
+      this.selectData = [];
+      console.log(this.tableData);
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
     //数据浏览 点击指定行，给基础数据赋值
     getMsgFormSon(val1, val2, val3, showtableIndex, pageSize, currentPage) {
       this.kcxxsda001 = val1.kcxxsda001;
@@ -492,7 +537,7 @@ export default {
       if (this.delData) {
         this.delData.forEach(data => {
           this.tableData.forEach((val, i) => {
-            if (data.id == val.id) {
+            if (data.index == val.index) {
               this.tableData.splice(i, 1);
             }
           });
@@ -549,6 +594,36 @@ export default {
       }
     },
     //查询单身
+    showtableDataChild() {
+      this.kcxxsda001 = this.tableData1[this.showtableIndex].kcxxsda001;
+      this.kcxxsda002 = this.tableData1[this.showtableIndex].kcxxsda002;
+      this.kcxxsda003 = this.tableData1[this.showtableIndex].kcxxsda003;
+      this.kcxxsda004 = this.tableData1[this.showtableIndex].kcxxsda004;
+      this.kcxxsda005 = this.tableData1[this.showtableIndex].kcxxsda005;
+      this.kcxxsda006 = this.tableData1[this.showtableIndex].kcxxsda006;
+      this.kcxxsda007 = this.tableData1[this.showtableIndex].kcxxsda007;
+      this.kcxxsda015 = this.tableData1[this.showtableIndex].kcxxsda015;
+    },
+    //查询
+    queryData() {
+      this.tableData1 = [];
+      this.showtableData();
+      this.tableData = [];
+      this.addRow();
+      this.$axios({
+        method: "post",
+        url: "http://localhost:8086/kcxxsd/listB",
+        data: { kcxxsda001: this.kcxxsda001 }
+      }).then(response => {
+        this.tableData = response.data.data;
+      });
+    },
+    //查询单身
+    addData() {
+      this.tableData = [];
+      this.showtableData;
+      this.addRow();
+    },
     queryB() {
       let param = new URLSearchParams();
       param.append("kcxxsda001", this.kcxxsda001);
@@ -557,7 +632,11 @@ export default {
         kcxxsda002: "this.kcxxsda002",
         kcxxsda003: "this.kcxxsda003"
       };
+
+      param.append("kcxxsda001", this.kcxxsda001);
+      // param.append("tableB", JSON.stringify(this.tableColumnB));
       param.append("kcxxsda", JSON.stringify(kcxxsda));
+      console.log(kcxxsda);
       this.$axios({
         method: "post",
         url: "http://localhost:8086/kcxxsd/listB",
@@ -607,6 +686,7 @@ export default {
     },
     //删除
     delRowData() {
+      // 删除提示
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -628,12 +708,7 @@ export default {
             message: "删除成功!"
           });
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
+        .catch(() => {});
     },
     //查询功能
     queryData() {
@@ -809,7 +884,8 @@ export default {
   },
   components: {
     jcTable,
-    sjTable
+    sjTable,
+    tempTwo
   }
 };
 </script>
@@ -848,12 +924,16 @@ export default {
 .date-input .el-date-editor {
   flex-grow: 1;
 }
-
-
 </style>
 
 <style>
-.template-one .el-row{
-  margin: 5px 0 ;
+.template-one .el-row {
+  margin: 5px 0;
+}
+.template-one .el-dialog__body {
+  padding: 10px 20px;
+}
+.template-one .el-dialog__footer {
+  text-align: center;
 }
 </style>

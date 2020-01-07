@@ -22,7 +22,7 @@
    top: 0px;
    width: 100px;
    height: 100px;
-   z-index: 999;
+   z-index: 98;
  }
  .pass img{
    width: 100%;

@@ -14,7 +14,7 @@
       @select-all="selectRow"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column type="index" label="项次" width="50"></el-table-column>
+      <el-table-column type="index" label="项次" width="50" align="center"></el-table-column>
       <el-table-column
         v-for="(item,index) in tableColumnB"
         :key="index"
@@ -40,7 +40,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="block">
+    <div class="block" v-if="pagination">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -69,6 +69,9 @@ export default {
     },
     tableColumnB: {
       type: Array
+    },
+    pagination:{
+      type:Boolean
     }
   },
   data() {
@@ -157,7 +160,7 @@ export default {
     },
     sendData(){
         //func: 是父组件指定的传数据绑定的函数，this.msg:子组件给父组件传递的数据
-        this.$emit('func',this.rowData,this.showTabs,this.delData)
+        this.$emit('func',this.rowData,this.showTabs)
     },
     sendDel(){
       this.$emit('del',this.delData)
@@ -173,13 +176,10 @@ export default {
     tabClick(row,col){
       this.tabClickIndex = row.index;
       this.tabClickLabel = col.label;
-      console.log(this.tabClickLabel)
-      console.log(this.tabClickIndex)
+    
     },
     tableRowClassName({row,rowIndex}){
       row.index = rowIndex
-      console.log(row)
-      console.log(rowIndex)
     },
     inputBlur() {
       this.tabClickIndex = null

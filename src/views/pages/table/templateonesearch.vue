@@ -6,20 +6,19 @@
       style="width: 100%"
       border
       class="etables"
-      sort-orders="['ascending', 'descending', 'default']"
+      :default-sort="{prop: 'date', order: 'descending'}"
       @row-dblclick="changePage"
-      highlight-current-row
-      @current-change="changePageVal"
-      @sort-change="sortChange"
-      :row-class-name="tableRowClassName"
-
+      @cell-click="tabClick"
+      @select="selectRow"
+      @select-all="selectRow"
     >
-      <el-table-column type="index" label width="50"></el-table-column>
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column type="index" label="项次" width="50" align="center"></el-table-column>
       <el-table-column
-        v-for="(item,index) in tableColumn"
+        v-for="(item,index) in tableColumnB"
         :key="index"
         :label="item.name"
-        sortable="custom"
+        :sortable="item.sort"
         :prop="item.prop"
         :resizable="!item.lock"
         :width="item.width"
@@ -38,7 +37,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="block">
+    <div class="block" v-if="pagination">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -46,7 +45,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pageTotal"
+        :total="tableData.length"
       ></el-pagination>
     </div>
   </div>
@@ -65,11 +64,11 @@ export default {
     dataurl: {
       type: String
     },
-    tableColumn: {
+    tableColumnB: {
       type: Array
     },
-    pageTotal:{
-      type:Number
+    pagination:{
+      type:Boolean
     }
   },
   data() {
@@ -79,15 +78,21 @@ export default {
       isshow: false,
       delData: [],
       rowData: {},
-      showTabs: "2",
+      showTabs: "",
       show: false,
       currentPage: 1,
-      childPageSize:10,
       loading: true,
-      showTableIndex:0
-      // tableColumn: [
+      // tableColumnB: [
       //   {
       //     name: "日期",
+      //     width: "",
+      //     prop: "date",
+      //     show: true,
+      //     lock: false,
+      //     sort: true
+      //   },
+      //   {
+      //     name: "XX",
       //     width: "",
       //     prop: "date",
       //     show: true,
@@ -125,15 +130,11 @@ export default {
       return row.address;
     },
     handleSizeChange(val) {
-      this.childPageSize = val;
       console.log(`每页 ${val} 条`);
-      this.sendData()
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.currentPage = val;
-      this.sendData()
-      // sessionStorage.setItem("currentPage", val);
+      sessionStorage.setItem("currentPage", val);
     },
     getTabledata() {
       if (this.dataurl) {
@@ -149,43 +150,42 @@ export default {
           });
       }
     },
-    changePageVal(currentRow) {
-      this.rowData = currentRow;
-      this.showTableIndex = currentRow.index;
-      this.sendData();
-      console.log(currentRow)
-    },
     changePage(row) {
       this.rowData = row;
       this.showTabs = "1";
       this.sendData();
     },
-    sendData() {
-      //func: 是父组件指定的传数据绑定的函数，this.msg:子组件给父组件传递的数据
-      this.$emit("func", this.rowData, this.showTabs, this.delData,this.showTableIndex,this.childPageSize,this.currentPage);
-
+    sendData(){
+        //func: 是父组件指定的传数据绑定的函数，this.msg:子组件给父组件传递的数据
+        this.$emit('func',this.rowData,this.showTabs)
     },
-    sendDel() {
-      this.$emit("del", this.delData);
+    sendDel(){
+      this.$emit('del',this.delData)
     },
-    showInput(row, column, cell, event) {
+    showInput(row, column, cell, event){
       this.isshow = !this.isshow;
     },
+    selectRow(selection,row){
+      this.delData = selection;
+      this.sendDel()
+      // this.$store.commit('selectRow',selection)
+    },
+    tabClick(row,col){
+      this.tabClickIndex = row.index;
+      this.tabClickLabel = col.label;
+    
+    },
     inputBlur() {
-      this.tabClickIndex = null;
-      this.tabClickLabel = "";
-    },
-    sortChange(col) {
-      console.log(col);
-    },
-    tableRowClassName({row,rowIndex}){
-      row.index = rowIndex;
+      this.tabClickIndex = null
+      this.tabClickLabel = ''
     }
   },
   components: {}
 };
 </script>
 
+
 <style>
+
 </style>
 
